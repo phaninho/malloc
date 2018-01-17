@@ -1,13 +1,19 @@
+ifeq ($(HOSTTYPE),)
+	HOSTTYPE := $(shell uname -m)_$(shell uname -s)
+endif
+
+NAME = libft_malloc_$(HOSTTYPE).so
+LINK = libft_malloc.so
+
 SRC_PATH = ./src/
 OBJ_PATH = ./obj/
 INC_PATH = ./include/ ./libft/
 LIB_PATH = ./libft/
 
 SRC_NAME = main.c
-
 OBJ_NAME = $(SRC_NAME:.c=.o)
 LIB_NAME = -lft
-NAME = ft_malloc
+DEP_NAME = ./include/malloc.h
 
 SRC = $(addprefix $(SRC_PATH),$(SRC_NAME))
 OBJ = $(addprefix $(OBJ_PATH),$(OBJ_NAME))
@@ -22,7 +28,8 @@ all: lib
 	@make $(NAME)
 
 $(NAME): $(OBJ)
-		$(CC) $(INC) $^ -o $@ $(LIB) $(LIB_NAME)
+	$(CC) $(INC) $^ -o $@ $(LIB) $(LIB_NAME) -shared  
+	ln -sf $(NAME) $(LINK)
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c
 	@mkdir -p $(OBJ_PATH)
