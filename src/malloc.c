@@ -4,7 +4,7 @@
 void  *malloc(size_t size)
 {
   char  *str;
-  printf("on est la\n");
+  printf("dans la fonction malloc\n");
   if (!(str = (char *)mmap(0, size, PROT_READ | PROT_WRITE, \
     MAP_ANON | MAP_PRIVATE, -1, 0)))
     return (NULL);
