@@ -32,7 +32,7 @@ SRC_NAME = ft_memset.c ft_bzero.c ft_memcpy.c ft_memccpy.c ft_swap.c \
 		   ft_lstiter.c ft_lstmap.c ft_isspace.c ft_strrev.c ft_intsize.c \
 		   ft_countword_btwsign.c ft_move_sign.c get_next_line.c ft_tabdel.c
 OBJ_NAME = $(SRC_NAME:.c=.o)
-LIB_NAME =
+
 NAME = libft.a
 
 SRC = $(addprefix $(SRC_PATH),$(SRC_NAME))

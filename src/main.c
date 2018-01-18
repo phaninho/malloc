@@ -1,24 +1,16 @@
-#include "malloc.h"
+#include <string.h>
+#include <unistd.h>
+#include <stdlib.h>
 #include <stdio.h>
-
-void  *malloc(size_t size)
-{
-  char  *str;
-  if (!(str = (char *)mmap(0, size, PROT_READ | PROT_WRITE, \
-    MAP_ANON | MAP_PRIVATE, -1, 0)))
-    return (NULL);
-  return (str);
-}
+#include "../include/ft_malloc.h"
 
 int   main(int ac, char **av)
 {
   char  *str;
-printf("t_block:%zu pagesize: %d\n", sizeof(t_block), getpagesize());
+printf("t_block:%zu pagesize: %d\n", sizeof(char), getpagesize());
   str = NULL;
-  if (ac > 2)
-  {
-    if (!(ft_strcmp("malloc", av[1])))
-      str = malloc(ft_atoi(av[2]));
-  }
+
+    str = malloc(atoi(av[2]));
+    printf("str[%p]\n", str);
   return (0);
 }

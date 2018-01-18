@@ -12,4 +12,6 @@ typedef struct s_block
     char c;
 }              t_block;
 
+void	*malloc(size_t size);
+
 #endif
