@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../include/malloc.h"
+# include "../include/ft_malloc.h"
 # include <stdlib.h>
 # include <string.h>
 # include <sys/resource.h>
