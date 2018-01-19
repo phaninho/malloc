@@ -14,7 +14,7 @@ void          *tiny_alloc(size_t size)
   ptr = NULL;
   init_tiny_page(&block);
   printf("c'est un TINY\n");
-  if ((ptr = (void *)mmap(0, TINY, PROT_READ | PROT_WRITE,\
+  if ((ptr = (void *)mmap(0, TINY_BLOCK_SIZE, PROT_READ | PROT_WRITE,\
     MAP_ANON | MAP_PRIVATE, -1, 0)) == MAP_FAILED)
     return (NULL);
   return (ptr);
@@ -26,7 +26,7 @@ void          *small_alloc(size_t size)
 (void)size;
   ptr = NULL;
   printf("c'est un SMALL\n");
-  if ((ptr = (void *)mmap(0, SMALL, PROT_READ | PROT_WRITE,\
+  if ((ptr = (void *)mmap(0, SMALL_BLOCK_SIZE, PROT_READ | PROT_WRITE,\
     MAP_ANON | MAP_PRIVATE, -1, 0)) == MAP_FAILED)
     return (NULL);
   return (ptr);
