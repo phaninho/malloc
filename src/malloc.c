@@ -1,58 +1,64 @@
 #include "ft_malloc.h"
 #include <stdio.h>
 
-void      *st_alloc(size_t size)
+void    init_tiny_page(t_page_tiny *block)
 {
-  void     *str;
-
-  str = NULL;
-  if (size <= TINY)
-  {
-    printf("dans st_alloc\n");
-    if ((str = (void *)mmap(0, size <= TINY ? TINY : SMALL, PROT_READ | PROT_WRITE, \
-      MAP_ANON | MAP_PRIVATE, -1, 0)) == MAP_FAILED)
-      return (NULL);
-  }
-  return (str);
+  ft_memset(block, 0, sizeof(t_page_tiny));
 }
 
-void      *l_alloc(size_t size)
+void          *tiny_alloc(size_t size)
 {
-  printf("c'est un LARGE\n");
-  void	   *str;
-
-  str = NULL;
-  if ((str = (void *)mmap(0, size, PROT_READ | PROT_WRITE, \
+  void          *ptr;
+  t_page_tiny   block;
+(void)size;
+  ptr = NULL;
+  init_tiny_page(&block);
+  printf("c'est un TINY\n");
+  if ((ptr = (void *)mmap(0, TINY, PROT_READ | PROT_WRITE,\
     MAP_ANON | MAP_PRIVATE, -1, 0)) == MAP_FAILED)
     return (NULL);
-  return (str);
+  return (ptr);
 }
 
-t_block   *init_block()
+void          *small_alloc(size_t size)
 {
-  static t_block   block;
-
-  // block.next = NULL;
-  // block.size = 0;
-  // block.free = 0;
-  return (&block);
+  void     *ptr;
+(void)size;
+  ptr = NULL;
+  printf("c'est un SMALL\n");
+  if ((ptr = (void *)mmap(0, SMALL, PROT_READ | PROT_WRITE,\
+    MAP_ANON | MAP_PRIVATE, -1, 0)) == MAP_FAILED)
+    return (NULL);
+  return (ptr);
 }
 
-void	    *malloc(size_t size)
+void          *large_alloc(size_t size)
 {
-  void     *str;
-  t_block  *block;
+  printf("c'est un LARGE\n");
+  void	   *ptr;
 
-  block = init_block();
-  printf("dans la fonction malloc un t_block vaux [%zu]\n", sizeof(t_block));
+  ptr = NULL;
+  if ((ptr = (void *)mmap(0, size, PROT_READ | PROT_WRITE, \
+    MAP_ANON | MAP_PRIVATE, -1, 0)) == MAP_FAILED)
+    return (NULL);
+  return (ptr);
+}
+
+void	       *malloc(size_t size)
+{
+  void     *ptr;
+  //t_block  *block;
+
+  printf("MTS=>%zu, MSS=>%zu t_page_tiny=>[%zu]  t_page_small=>[%zu]\n", META_SIZE_TINY, META_SIZE_SMALL, sizeof(t_page_tiny), sizeof(t_page_small));
   size = align4(size);
-  printf("apres align8, size => [%zu]\n", size);
+  printf("apres align4, size => [%zu], small %d\n", size, SMALL);
   if (size == 0)
     return (NULL);
+  else if(size <= TINY)
+    ptr = tiny_alloc(size);
   else if (size <= SMALL)
-    str = st_alloc(size);
+    ptr = small_alloc(size);
   else
-    str = l_alloc(size);
-
-  return (str);
+    ptr = large_alloc(size);
+  return (ptr);
 }
