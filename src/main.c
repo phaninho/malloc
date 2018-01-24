@@ -25,7 +25,7 @@ int   main()
       printf("============fin=================\n\n");
 
     printf("==========debut===============\n");
-    ptr = malloc(5);
+    ptr = malloc(4);
       printf("address ptr[%p]\n", ptr);
       printf("len str[%lu]\n",strlen( ptr));
       printf("============fin=================\n\n");

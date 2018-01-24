@@ -23,7 +23,10 @@ void	  *create_block(t_block *block, size_t size)
   {
     tmp = block;
     while (tmp && tmp->next)
+    {
+      printf("ok\n");
       tmp = tmp->next;
+    }
     next = tmp;
   }
   if (next && next->state == FREE && size < next->size)
@@ -71,6 +74,8 @@ void		*tiny_alloc(size_t size, t_env *e)
   if (e->tiny)
   {
     ptr = create_block(e->tiny, size);
+    while (e->tiny->next->next)
+      e->tiny = e->tiny->next;
     printf("block=>[%p] next=>[%p] diff=>%d\n", e->tiny, e->tiny->next, (int)e->tiny->next - (int)e->tiny);
   }
   return (ptr);
