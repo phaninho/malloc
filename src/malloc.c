@@ -38,18 +38,18 @@ void	  *create_block(t_block *block, size_t size)
     next->next->state = FREE;
     next->next->size = (int)next->size - (int)size - sizeof(t_block);
     next->size = size;
-    return ((void*)next);
+    return ((void*)next + sizeof(t_block));
   }
   else
   {
-    printf("premier passage \n");
+    printf("premier passage size vaux [%lu] et le next est situé [%p]\n", size, ((void*)block + sizeof(t_block) + size));
     block->state = USED;
     block->next = ((void*)block + sizeof(t_block) + size);
     block->next->state = FREE;
     block->next->size = (int)block->size - (int)size - sizeof(t_block);
     block->size = size;
   }
-  return ((void*)block);
+  return ((void*)block + sizeof(t_block));
 }
 
 int     create_page(size_t size, t_block **block)
@@ -64,8 +64,9 @@ int     create_page(size_t size, t_block **block)
 void		*tiny_alloc(size_t size, t_env *e)
 {
   void	*ptr = NULL;
-
-  if (!(e->tiny))
+//   if (e->tiny)
+// printf("tiny size =>%lu\n", e->tiny->next->size);
+  if (!(e->tiny) /*|| (e->tiny && e->tiny->next && e->tiny->next->size < sizeof(t_block))*/)
   {
     e->tiny_page_size = ALIGN_PAGE((TINY + sizeof(t_block)) * 100);
     if (!create_page(e->tiny_page_size, &e->tiny))
@@ -75,6 +76,7 @@ void		*tiny_alloc(size_t size, t_env *e)
   if (e->tiny)
   {
     ptr = create_block(e->tiny, size);
+    printf("diff entre e->tiny [%p] et retour de create_block [%p]\n", e->tiny, ptr);
     t_block *tmp = e->tiny;
     while (tmp->next->next)
       tmp = tmp->next;
@@ -88,6 +90,7 @@ void		*malloc(size_t size)
   t_env   *e;
   void	  *ptr = NULL;
 
+printf("taille demandée %lu\n", size);
   e = init_env();
   if (size == 0)
     return (NULL);
