@@ -9,6 +9,9 @@
 # include <stdio.h>
 # include <stdbool.h>
 
+#define   FREE 0
+#define   USED 1
+
 # define  TYPE_TINY 0
 # define  TYPE_SMALL 1
 # define  TYPE_LARGE 2
@@ -17,15 +20,14 @@
 # define  SMALL  512
 # define  TINY_BLOCK_SIZE sizeof(t_block_tiny)
 # define  SMALL_BLOCK_SIZE sizeof(t_block_small)
-# define  align4(x) (((((x) - 1) >> 2) << 2) + 4)
+# define  ALIGN_PAGE(x) ((((x - 1) >> 12) << 12)  + getpagesize())
 
 
 typedef struct    s_block_tiny
 {
   bool                state;
-  char                id;
+  uint8_t                id;
   char                type;
-  char                data[TINY];
 }                 t_block_tiny;
 
 typedef struct    s_block_small
@@ -33,7 +35,6 @@ typedef struct    s_block_small
   bool                state;
   uint16_t            id;
   char                type;
-  char                data[SMALL];
 }                 t_block_small;
 
 typedef struct    s_page_tiny
