@@ -22,9 +22,10 @@ void	  *create_block(t_block *block, size_t size)
   if (block && block->next)
   {
     tmp = block;
+    int i = 0;
     while (tmp && tmp->next)
     {
-      printf("ok\n");
+      printf("next=>%d\n", i++);
       tmp = tmp->next;
     }
     next = tmp;
@@ -74,9 +75,10 @@ void		*tiny_alloc(size_t size, t_env *e)
   if (e->tiny)
   {
     ptr = create_block(e->tiny, size);
-    while (e->tiny->next->next)
-      e->tiny = e->tiny->next;
-    printf("block=>[%p] next=>[%p] diff=>%d\n", e->tiny, e->tiny->next, (int)e->tiny->next - (int)e->tiny);
+    t_block *tmp = e->tiny;
+    while (tmp->next->next)
+      tmp = tmp->next;
+    printf("block=>[%p] next=>[%p] diff=>%d missing space %lu\n", tmp, tmp->next, (int)tmp->next - (int)tmp, tmp->next->size);
   }
   return (ptr);
 }
