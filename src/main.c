@@ -7,11 +7,11 @@ int   main()
   char *str;
   printf("==========debut===============\n");
 
-  str = (char *)malloc(sizeof(char) * 8 + 1);
-  str[8] = '\0';
+  str = (char *)malloc(sizeof(char) * 8);
+  str[7] = '\0';
   int i = 0;
-  char a = '1';
-  while (i < 9)
+  char a = '0';
+  while (i < 8)
   {
     str[i] = a;
     a++;
@@ -20,7 +20,7 @@ int   main()
   printf("str vaux=======>[%s][%p]\n", str, str);
 
     printf("address ptr[%p]\n", str);
-    printf("len str[%lu]\n",strlen( ptr));
+    printf("len str[%lu]\n",strlen(str));
     printf("============fin=================\n\n");
     //
     // printf("==========debut===============\n");
