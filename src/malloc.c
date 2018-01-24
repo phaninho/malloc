@@ -80,7 +80,7 @@ void		*tiny_alloc(size_t size, t_env *e)
     t_block *tmp = e->tiny;
     while (tmp->next->next)
       tmp = tmp->next;
-    printf("block=>[%p] next=>[%p] diff=>%d missing space %lu\n", tmp, tmp->next, (int)tmp->next - (int)tmp, tmp->next->size);
+    printf("block=>[%p] next=>[%p] diff=>%d missing space %lu[%d]\n", tmp, tmp->next, (int)tmp->next - (int)tmp, tmp->next->size, (int)tmp->next - (int)ptr);
   }
   return (ptr);
 }
