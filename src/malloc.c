@@ -87,14 +87,14 @@ void		*tiny_alloc(size_t size, t_env *e)
 
 void		*malloc(size_t size)
 {
-  t_env   *e;
-  void	  *ptr = NULL;
+	t_env   *e;
+	void	  *ptr = NULL;
 
-printf("taille demandée %lu\n", size);
-  e = init_env();
-  if (size == 0)
-    return (NULL);
-  else
-    ptr = tiny_alloc(size, e);
-  return (ptr);
+	printf("taille demandée %lu\n", size);
+	e = init_env();
+	if (size == 0)
+		return (NULL);
+	else
+		ptr = tiny_alloc(size, e);
+	return (ptr);
 }

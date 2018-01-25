@@ -22,7 +22,7 @@ int   main()
     printf("address ptr[%p]\n", str);
     printf("len str[%lu]\n",strlen(str));
     printf("============fin=================\n\n");
-    //
+
     // printf("==========debut===============\n");
     // str = (char*)malloc(sizeof(char) * 8);
     // str[7] = '\0';
@@ -40,9 +40,8 @@ int   main()
     //   printf("address ptr[%p]\n", ptr);
     //   printf("len str[%lu]\n",strlen( ptr));
     //   printf("============fin=================\n\n");
-
     printf("==========debut===============\n");
-    ptr = malloc(5);
+    ptr = malloc(2);
       printf("address ptr[%p]\n", ptr);
       printf("len str[%lu]\n",strlen( ptr));
       printf("============fin=================\n\n");
