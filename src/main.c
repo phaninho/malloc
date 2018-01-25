@@ -40,11 +40,28 @@ int   main()
     //   printf("address ptr[%p]\n", ptr);
     //   printf("len str[%lu]\n",strlen( ptr));
     //   printf("============fin=================\n\n");
-    printf("==========debut===============\n");
-    ptr = malloc(3990);
-      printf("address ptr[%p]\n", ptr);
-      printf("len str[%lu]\n",strlen( ptr));
+    str = (char *)malloc(sizeof(char) * 3991);
+    str[3990] = '\0';
+    i = 0;
+    a = '0';
+    while (i < 3990)
+    {
+      str[i] = a;
+      a = a == '9'? '0' - 1 : a;
+      a++;
+      i++;
+    }
+    printf("str vaux=======>[%s][%p] et l'index est a [%d]\n", str, str, i);
+
+      printf("address ptr[%p]\n", str);
+      printf("len str[%lu]\n",strlen(str));
       printf("============fin=================\n\n");
+
+    // printf("==========debut===============\n");
+    // ptr = malloc(3990);
+    //   printf("address ptr[%p]\n", ptr);
+    //   printf("len str[%lu]\n",strlen( ptr));
+    //   printf("============fin=================\n\n");
 
       printf("==========debut===============\n");
       ptr = malloc(40);

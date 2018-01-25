@@ -4,7 +4,7 @@ int     create_page(size_t size, t_block **block);
 
 t_env		*init_env(void)
 {
-	static t_env  e = {NULL, 0};
+	static t_env  e = {NULL, NULL, 0, 0};
 
 	return (&e);
 }
@@ -25,7 +25,8 @@ int			init_page(t_env *e, t_block **block, int type_size)
 	// 	*block = (*block)->next;
 	printf("[tiny_alloc] \n");
 	len = ALIGN_PAGE((type_size + sizeof(t_block)) * 100);
-	e->tiny_page_size += len;
+	if (type_size == TINY)
+		e->tiny_page_size += len;
 	if (!(create_page(len, block)))
 		return (1);
 	// *block = tmp;
@@ -89,6 +90,40 @@ int     create_page(size_t size, t_block **block)
   return (1);
 }
 
+void		*small_alloc(size_t size, t_env *e)
+{
+  void	*ptr = NULL;
+	t_block *tmp = NULL;
+//   if (e->small)
+// printf("small size =>%lu\n", e->small->next->size);
+	if (e->small && e->small->next)
+	{
+		tmp = e->small;
+		while (tmp && tmp->next && tmp->next->next)
+			tmp = tmp->next;
+			printf("n-s[%lu]s-t_b[%lu]\n", tmp->size, sizeof(t_block));
+
+	}
+	if (tmp && tmp->next)
+	printf("tms [%d] < sot_b [%d] || sot_b+s [%d]\n", (int)tmp->next->size, (int)sizeof(t_block), (int)sizeof(t_block) + (int)size);
+  if (!(e->small) || (tmp && tmp->next && (int)tmp->next->size < (int)sizeof(t_block) + (int)size))
+  {
+		if (init_page(e, &(e)->small, SMALL))
+      return (NULL);
+    printf("===><><><Nouvelle initialisation de page [%lu]\n", e->small->size);
+  }
+  if (e->small)
+  {
+    ptr = create_block(e->small, size);
+    printf("diff entre e->small [%p] et retour de create_block [%p]\n", e->small, ptr);
+    t_block *tmp = e->small;
+    while (tmp->next->next)
+      tmp = tmp->next;
+    printf("block=>[%p] next=>[%p] diff=>%d missing space %lu[%d]\n", tmp, tmp->next, (int)tmp->next - (int)tmp, tmp->next->size, (int)tmp->next - (int)ptr);
+  }
+  return (ptr);
+}
+
 void		*tiny_alloc(size_t size, t_env *e)
 {
   void	*ptr = NULL;
@@ -133,13 +168,17 @@ void		*malloc(size_t size)
 	e = init_env();
 	if (size == 0)
 		return (NULL);
-	else
+	else if (size <= TINY)
 		ptr = tiny_alloc(size, e);
-		tmp = e->tiny->next;
+	else //if (size <= SMALL)
+		ptr = small_alloc(size, e);
+	// else
+		// ptr = large_alloc(size, e);
+	tmp = e->tiny->next;
 
-		while (tmp->next)
+	while (tmp->next)
 		tmp = tmp->next;
-			printf("en sortie, la taille est a => [%lu]", tmp->size);
+	printf("en sortie, la taille est a => [%lu] et la size[%lu]\n", tmp->size, e->tiny_page_size);
 
 	return (ptr);
 }
