@@ -105,7 +105,7 @@ void		*tiny_alloc(size_t size, t_env *e)
 	}
 	if (tmp && tmp->next)
 	printf("tms [%d] < sot_b [%d] || sot_b+s [%d]\n", (int)tmp->next->size, (int)sizeof(t_block), (int)sizeof(t_block) + (int)size);
-  if (!(e->tiny) || (tmp && tmp->next && (int)tmp->next->size < (int)sizeof(t_block)) || (tmp && tmp->next && (int)tmp->next->size < (int)sizeof(t_block) + (int)size))
+  if (!(e->tiny) || (tmp && tmp->next && (int)tmp->next->size < (int)sizeof(t_block) + (int)size))
   {
 		if (init_page(e, &(e)->tiny, TINY))
       return (NULL);
