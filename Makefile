@@ -10,7 +10,7 @@ OBJ_PATH = ./obj/
 INC_PATH = ./include/ ./libft/
 LIB_PATH = ./libft/
 
-SRC_NAME = malloc.c
+SRC_NAME = malloc.c show_alloc.c realloc.c free.c inits.c creats.c calloc.c
 OBJ_NAME = $(SRC_NAME:.c=.o)
 LIB_NAME = -lft
 DEP = ./include/ft_malloc.h

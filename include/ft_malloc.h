@@ -1,7 +1,7 @@
 #ifndef FT_MALLOC_H
 # define FT_MALLOC_H
 
-# include "../libft/libft.h"
+# include "../libft/libft/includes/libft.h"
 # include <sys/mman.h>
 # include <string.h>
 # include <unistd.h>
@@ -42,8 +42,16 @@ struct    s_env
   size_t   large_page_size;
 };
 
-void	*malloc(size_t size);
-void  show_alloc_mem();
-int   create_page(size_t size, t_block **block);
+void		free(void *ptr);
+void    show_alloc_mem();
+void    *malloc(size_t size);
+void    *realloc(void *ptr, size_t size);
+void	  *calloc(size_t nmemb, size_t size);
+
+void	  *create_block(t_block *block, size_t size);
+void    init_block(t_block *block, size_t size);
+int     create_page(size_t size, t_block **block);
+int			init_page(t_env *e, t_block **block, int type_size, int type);
+t_env		*init_env();
 
 #endif

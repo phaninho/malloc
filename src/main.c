@@ -73,7 +73,21 @@ int   main()
   // free(str);
   // printf("============fin=================\n\n");
 
-// printf("1:[%s] 2:[%s] 3:[%s] 4:[%s] 5:[%s]\n", str, str1, str2, str3, str4);
-  show_alloc_mem();
+printf("1:[%s] 2:[%s] 3:[%s] 4:[%s] 5:[%s]\n", str, str1, str2, str3, str4);
+  // show_alloc_mem();
+  // i = 7;
+  // a = '0';
+  char *p;
+  str1 = realloc(str1, 4);
+printf("{%s}\n",str1);
+  // while (i < 333334)
+  // {
+  //   str[i] = a;
+  //   a = a == '9'? '0' - 1 : a;
+  //   a++;
+  //   i++;
+  // }
+  // t_block *b = (t_block *)str;
+  // printf("\n%s %d\n", str, b->state);
   return (0);
 }
