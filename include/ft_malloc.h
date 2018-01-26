@@ -44,5 +44,6 @@ struct    s_env
 
 void	*malloc(size_t size);
 void  show_alloc_mem();
+int   create_page(size_t size, t_block **block);
 
 #endif
