@@ -35,9 +35,14 @@ struct     s_block
 struct    s_env
 {
   t_block  *tiny;
+  t_block  *small;
+  t_block  *large;
   size_t   tiny_page_size;
+  size_t   small_page_size;
+  size_t   large_page_size;
 };
 
 void	*malloc(size_t size);
+void  show_alloc_mem();
 
 #endif

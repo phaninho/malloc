@@ -4,7 +4,7 @@ int     create_page(size_t size, t_block **block);
 
 t_env		*init_env(void)
 {
-	static t_env  e = {NULL, NULL, 0, 0};
+	static t_env  e = {NULL, NULL, NULL, 0, 0, 0};
 
 	return (&e);
 }
@@ -16,41 +16,41 @@ void     init_block(t_block *block, size_t size)
   block->next = NULL;
 }
 
-int			init_page(t_env *e, t_block **block, int type_size)
+int			init_page(t_env *e, t_block **block, int type_size, int type)
 {
-	// t_block	*tmp;
 	size_t	len;
-	// tmp = *block;
-	// while (*block && (*block)->next)
-	// 	*block = (*block)->next;
-	printf("[tiny_alloc] \n");
-	len = ALIGN_PAGE((type_size + sizeof(t_block)) * 100);
-	if (type_size == TINY)
+
+	if (type != TYPE_LARGE)
+		len = ALIGN_PAGE((type_size + sizeof(t_block)) * 100);
+	else
+		len = ALIGN_PAGE((type_size + sizeof(t_block)));
+
+	if (type == TYPE_TINY)
 		e->tiny_page_size += len;
+	else if (type == TYPE_SMALL)
+		e->small_page_size += len;
+	else
+		e->large_page_size += len;
 	if (!(create_page(len, block)))
 		return (1);
-	// *block = tmp;
 	return (0);
 }
+
 void	  *create_block(t_block *block, size_t size)
 {
-  t_block *next = NULL;;
+  t_block *next;
   t_block *tmp;
 
+	next = NULL;
   if (block && block->next)
   {
     tmp = block;
-    int i = 0;
     while (tmp && tmp->next)
-    {
-      printf("next=>%d\n", i++);
       tmp = tmp->next;
-    }
     next = tmp;
   }
   if (next && next->state == FREE && size < next->size)
   {
-    printf("[create_block] assigne valeurs au next \n");
     next->state = USED;
     next->next = ((void*)next + sizeof(t_block) + size);
     next->next->state = FREE;
@@ -61,7 +61,6 @@ void	  *create_block(t_block *block, size_t size)
   }
   else
   {
-    printf("[create_block] initialise les valeurs du block. size vaux [%lu] et le next est situé [%p]\n", size, ((void*)block + sizeof(t_block) + size));
     block->state = USED;
     block->next = ((void*)block + sizeof(t_block) + size);
     block->next->state = FREE;
@@ -75,17 +74,9 @@ void	  *create_block(t_block *block, size_t size)
 
 int     create_page(size_t size, t_block **block)
 {
-	// t_block *tmp;
-
-	// tmp = NULL;
-	// if (*block && (*block)->next)
   if ((*block = (void *)mmap(0, size, PROT_READ | PROT_WRITE,\
     MAP_ANON | MAP_PRIVATE, -1, 0)) == MAP_FAILED)
     return (0);
-		// if ((tmp = (void *)mmap(0, size, PROT_READ | PROT_WRITE,\
-	  //   MAP_ANON | MAP_PRIVATE, -1, 0)) == MAP_FAILED)
-	  //   return (0);
-		// printf(">>>>>>>>>>>>>>>[%p],[%p]<<<<<<<<<<< dif %d\n", *block, tmp, (int)tmp - (int)*block);
   init_block(*block, size);
   return (1);
 }
@@ -94,33 +85,19 @@ void		*small_alloc(size_t size, t_env *e)
 {
   void	*ptr = NULL;
 	t_block *tmp = NULL;
-//   if (e->small)
-// printf("small size =>%lu\n", e->small->next->size);
+	// printf("c'est un small\n");
+
 	if (e->small && e->small->next)
 	{
 		tmp = e->small;
 		while (tmp && tmp->next && tmp->next->next)
 			tmp = tmp->next;
-			printf("n-s[%lu]s-t_b[%lu]\n", tmp->size, sizeof(t_block));
-
 	}
-	if (tmp && tmp->next)
-	printf("tms [%d] < sot_b [%d] || sot_b+s [%d]\n", (int)tmp->next->size, (int)sizeof(t_block), (int)sizeof(t_block) + (int)size);
   if (!(e->small) || (tmp && tmp->next && (int)tmp->next->size < (int)sizeof(t_block) + (int)size))
-  {
-		if (init_page(e, &(e)->small, SMALL))
+		if (init_page(e, &(e)->small, SMALL, TYPE_SMALL))
       return (NULL);
-    printf("===><><><Nouvelle initialisation de page [%lu]\n", e->small->size);
-  }
   if (e->small)
-  {
     ptr = create_block(e->small, size);
-    printf("diff entre e->small [%p] et retour de create_block [%p]\n", e->small, ptr);
-    t_block *tmp = e->small;
-    while (tmp->next->next)
-      tmp = tmp->next;
-    printf("block=>[%p] next=>[%p] diff=>%d missing space %lu[%d]\n", tmp, tmp->next, (int)tmp->next - (int)tmp, tmp->next->size, (int)tmp->next - (int)ptr);
-  }
   return (ptr);
 }
 
@@ -128,34 +105,92 @@ void		*tiny_alloc(size_t size, t_env *e)
 {
   void	*ptr = NULL;
 	t_block *tmp = NULL;
-//   if (e->tiny)
-// printf("tiny size =>%lu\n", e->tiny->next->size);
+	// printf("c'est un tiny\n");
+
 	if (e->tiny && e->tiny->next)
 	{
 		tmp = e->tiny;
 		while (tmp && tmp->next && tmp->next->next)
 			tmp = tmp->next;
-			printf("n-s[%lu]s-t_b[%lu]\n", tmp->size, sizeof(t_block));
-
 	}
-	if (tmp && tmp->next)
-	printf("tms [%d] < sot_b [%d] || sot_b+s [%d]\n", (int)tmp->next->size, (int)sizeof(t_block), (int)sizeof(t_block) + (int)size);
   if (!(e->tiny) || (tmp && tmp->next && (int)tmp->next->size < (int)sizeof(t_block) + (int)size))
   {
-		if (init_page(e, &(e)->tiny, TINY))
+		if (init_page(e, &(e)->tiny, TINY, TYPE_TINY))
       return (NULL);
-    printf("===><><><Nouvelle initialisation de page [%lu]\n", e->tiny->size);
   }
   if (e->tiny)
-  {
     ptr = create_block(e->tiny, size);
-    printf("diff entre e->tiny [%p] et retour de create_block [%p]\n", e->tiny, ptr);
-    t_block *tmp = e->tiny;
-    while (tmp->next->next)
-      tmp = tmp->next;
-    printf("block=>[%p] next=>[%p] diff=>%d missing space %lu[%d]\n", tmp, tmp->next, (int)tmp->next - (int)tmp, tmp->next->size, (int)tmp->next - (int)ptr);
-  }
   return (ptr);
+}
+
+void		*large_alloc(size_t size, t_env *e)
+{
+  void	*ptr = NULL;
+	// printf("c'est un large\n");
+
+  if (!(e->large))
+  {
+		if (init_page(e, &(e)->large, size + sizeof(t_block), TYPE_LARGE))
+      return (NULL);
+  }
+  if (e->large)
+    ptr = create_block(e->large, size);
+  return (ptr);
+}
+
+void    show_alloc_mem()
+{
+	t_env			*e;
+	t_block		*block;
+
+	e = init_env();
+
+	if (e->tiny)
+	{
+		block = e->tiny;
+		printf("TINY : %p\n", block);
+		printf("%p - %p : %lu octets\n", block, (void*)block + block->size, block->size);
+
+		// printf("%p - %p : %d %lu octets\n", block + sizeof(t_block), block + sizeof(t_block) + block->size, ((int)(block->next) - (int)sizeof(t_block)) - (int)(block), block->size);
+		while (block->next && block->next->next)
+		{
+			block = block->next;
+			printf("%p - %p : %lu octets\n", block, (void*)block + block->size, block->size);
+		}
+	}
+	if (e->small)
+	{
+		block = e->small;
+		printf("SMALL : %p\n", block);
+		printf("%p - %p : %lu octets\n", block, (void*)block + block->size, block->size);
+
+		// printf("%p - %p : %d %lu octets\n", block + sizeof(t_block), block + sizeof(t_block) + block->size, ((int)(block->next) - (int)sizeof(t_block)) - (int)(block), block->size);
+		while (block->next && block->next->next)
+		{
+			block = block->next;
+			printf("%p - %p : %lu octets\n", block, (void*)block + block->size, block->size);
+		}
+	}
+	if (e->large)
+	{
+		block = e->large;
+		printf("LARGE : %p\n", block);
+		printf("%p - %p : %lu octets\n", block, (void*)block + block->size, block->size);
+
+		// printf("%p - %p : %d %lu octets\n", block + sizeof(t_block), block + sizeof(t_block) + block->size, ((int)(block->next) - (int)sizeof(t_block)) - (int)(block), block->size);
+		while (block->next && block->next->next)
+		{
+			block = block->next;
+			printf("%p - %p : %lu octets\n", block, (void*)block + block->size, block->size);
+		}
+	}
+	// if (type == TYPE_TINY)
+	// else if (type == TYPE_SMALL)
+	// 	printf("SMALL : [%p]\n", ptr - sizeof(t_block));
+	// else
+	// 	printf("LARGE : [%p]\n", ptr - sizeof(t_block));
+	// printf()
+
 }
 
 void		*malloc(size_t size)
@@ -163,22 +198,38 @@ void		*malloc(size_t size)
 	t_env   *e;
 	void	  *ptr = NULL;
 	t_block *tmp;
+int type;
 
-	printf("taille demandée %lu\n", size);
 	e = init_env();
 	if (size == 0)
 		return (NULL);
 	else if (size <= TINY)
+	{
 		ptr = tiny_alloc(size, e);
-	else //if (size <= SMALL)
+		type = TYPE_TINY;
+	}
+	else if (size <= SMALL)
+	{
 		ptr = small_alloc(size, e);
-	// else
-		// ptr = large_alloc(size, e);
+		type = TYPE_SMALL;
+	}
+	else
+	{
+		ptr = large_alloc(size, e);
+		type = TYPE_LARGE;
+	}
 	tmp = e->tiny->next;
-
-	while (tmp->next)
-		tmp = tmp->next;
-	printf("en sortie, la taille est a => [%lu] et la size[%lu]\n", tmp->size, e->tiny_page_size);
-
 	return (ptr);
+}
+
+void		free(void *ptr)
+{
+	t_block	*block;
+
+	if (!ptr)
+		return ;
+	block = ptr - sizeof(t_block);
+
+	if (block && block->state == USED)
+		block->state = FREE;
 }
