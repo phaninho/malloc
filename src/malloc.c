@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   malloc.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: stmartin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/01/27 18:56:10 by stmartin          #+#    #+#             */
+/*   Updated: 2018/01/27 18:56:12 by stmartin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_malloc.h"
 
 
@@ -26,7 +38,8 @@ void		*small_alloc(size_t size, t_env *e)
 		while (tmp && tmp->next && tmp->next->next)
 			tmp = tmp->next;
 	}
-  if (!(e->small) || (tmp && tmp->next && (int)tmp->next->size < (int)sizeof(t_block) + (int)size))
+  if (!(e->small) || (tmp && tmp->next && \
+    (int)tmp->next->size < (int)sizeof(t_block) + (int)size))
 		if (init_page(e, tmp ? &tmp->next : &(e)->small, SMALL, TYPE_SMALL))
       return (NULL);
   if (e->small)
@@ -58,28 +71,16 @@ void		*tiny_alloc(size_t size, t_env *e)
 void		*malloc(size_t size)
 {
 	t_env   *e;
-	void	  *ptr = NULL;
-	t_block *tmp;
-int type;
+	void	  *ptr;
 
 	e = init_env();
 	if (size == 0)
 		return (NULL);
-	else if (size <= TINY)
-	{
+	if (size <= TINY)
 		ptr = tiny_alloc(size, e);
-		type = TYPE_TINY;
-	}
 	else if (size <= SMALL)
-	{
 		ptr = small_alloc(size, e);
-		type = TYPE_SMALL;
-	}
 	else
-	{
 		ptr = large_alloc(size, e);
-		type = TYPE_LARGE;
-	}
-	tmp = e->tiny->next;
 	return (ptr);
 }
