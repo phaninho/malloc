@@ -69,22 +69,33 @@ int   main()
     i++;
   }
 
-char *s;
-i = 0;
-a = '0';
-s = calloc(sizeof(char), 10);
-while (i < 9)
-{
-  s[i] = a;
-  a = a == '9'? '0' - 1 : a;
-  a++;
-  i++;
-}
-printf("%s\n", s);
+// printf("%s\n", s);
   // printf("==========debut du free=============== \n");
   // free(str);
   // printf("============fin=================\n\n");
-
+  // free(str1);
+  // str4 = realloc(str4, 0);
+// t_env *e;
+// e = init_env();
+// t_block *b;
+// b = e->tiny;
+// while (b && b->next)
+// {
+//   printf("%d %lu ", b->state, b->size);
+//   b = b->next;
+// }
+// b = e->small;
+// while (b && b->next)
+// {
+//   printf("%d %lu ", b->state, b->size);
+//   b = b->next;
+// }
+// b = e->large;
+// while (b && b->next)
+// {
+//   printf("%d %lu ", b->state, b->size);
+//   b = b->next;
+// }
 // printf("1:[%s] 2:[%s] 3:[%s] 4:[%s] 5:[%s]\n", str, str1, str2, str3, str4);
   // show_alloc_mem();
   // i = 7;
