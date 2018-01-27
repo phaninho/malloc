@@ -1,7 +1,7 @@
 #ifndef FT_MALLOC_H
 # define FT_MALLOC_H
 
-# include "../libft/libft/includes/libft.h"
+# include "../libft/libft.h"
 # include <sys/mman.h>
 # include <string.h>
 # include <unistd.h>
