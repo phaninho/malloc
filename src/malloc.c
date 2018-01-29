@@ -17,7 +17,7 @@ void		*large_alloc(size_t size, t_env *e)
 {
   void	*ptr = NULL;
 
-  if (!(e->large))
+  if (!(e->large) || (e->large && e->large->size < size))
   {
 		if (init_page(e, &(e)->large, size + sizeof(t_block), TYPE_LARGE))
       return (NULL);
@@ -72,7 +72,6 @@ void		*malloc(size_t size)
 {
 	t_env   *e;
 	void	  *ptr;
-
 	e = init_env();
 	if (size == 0)
 		return (NULL);

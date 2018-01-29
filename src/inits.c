@@ -29,6 +29,7 @@ void     init_block(t_block *block, size_t size)
 int			init_page(t_env *e, t_block **block, int type_size, int type)
 {
 	size_t	len;
+	// t_block	*tmp = NULL;
 
 	if (type != TYPE_LARGE)
 		len = ALIGN_PAGE((type_size + sizeof(t_block)) * 100);
@@ -41,6 +42,10 @@ int			init_page(t_env *e, t_block **block, int type_size, int type)
 		e->small_page_size += len;
 	else
 		e->large_page_size += len;
+	// if ((*block) && (*block)->next)
+		// tmp = *block;
+	// while (tmp->next)
+		// tmp = tmp->next;
 	if (!(create_page(len, block)))
 		return (1);
 	return (0);

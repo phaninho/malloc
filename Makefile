@@ -26,7 +26,6 @@ SRC_NAME = malloc.c show_alloc.c realloc.c free.c inits.c creats.c calloc.c
 OBJ_NAME = $(SRC_NAME:.c=.o)
 LIB_NAME = -lft
 DEP = ./include/ft_malloc.h
-TEST_NAME = exe_test
 
 SRC = $(addprefix $(SRC_PATH),$(SRC_NAME))
 OBJ = $(addprefix $(OBJ_PATH),$(OBJ_NAME))
@@ -65,7 +64,7 @@ fclean: clean
 re: fclean all
 
 test:
-	$(CC) src/main.c $(INC) $(LINK) -o $(TEST_NAME)
+	$(CC) test_malloc/test1.c $(INC) $(LINK) -o test1
 
 norme :
 	@echo "\033[37;44m norme libft \033[0m"
