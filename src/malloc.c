@@ -15,16 +15,31 @@
 
 void		*large_alloc(size_t size, t_env *e)
 {
-  void	*ptr = NULL;
+  // void	      *ptr = NULL;
+  t_block   *tmp = NULL;
 
-  if (!(e->large) || (e->large && e->large->size < size))
+  if (e->large && e->large->next)
+	{
+		tmp = e->large;
+		while (tmp && tmp->next)
+			tmp = tmp->next;
+	}
+  if (!(e->large) || (tmp && tmp->size < size))
   {
-		if (init_page(e, &(e)->large, size + sizeof(t_block), TYPE_LARGE))
-      return (NULL);
+    if (!(e->large))
+    {
+		if (init_page(e,  &(e)->large, size + sizeof(t_block), TYPE_LARGE))
+        return (NULL);
+      return (create_block(e->large, size));
+    }
+    else if (tmp)
+    {
+      if (init_page(e,  &tmp, size + sizeof(t_block), TYPE_LARGE))
+          return (NULL);
+        return (create_block(tmp, size));
+    }
   }
-  if (e->large)
-    ptr = create_block(e->large, size);
-  return (ptr);
+  return (create_block(tmp, size));
 }
 
 void		*small_alloc(size_t size, t_env *e)
