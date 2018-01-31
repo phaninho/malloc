@@ -94,7 +94,7 @@ void		*malloc(size_t size)
 {
 	t_env   *e;
 	void	  *ptr;
-
+// printf("oui\n");
 	e = init_env();
 	if (size == 0)
 		return (NULL);

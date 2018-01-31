@@ -12,6 +12,43 @@
 
 #include "../include/ft_malloc.h"
 
+int   search_block(t_env *e, void *ptr)
+{
+  t_block   *block;
+
+  if (e->tiny)
+  {
+    block = e->tiny;
+    while (block)
+    {
+      if (ptr == (void*)block + sizeof(t_block))
+        return (0);
+      block = block->next;
+    }
+  }
+  if (e->small)
+  {
+    block = e->small;
+    while (block)
+    {
+      if (ptr == (void*)block + sizeof(t_block))
+        return (0);
+      block = block->next;
+    }
+  }
+  if (e->large)
+  {
+    block = e->large;
+    while (block)
+    {
+      if (ptr == (void*)block + sizeof(t_block))
+        return (0);
+      block = block->next;
+    }
+  }
+  return (1);
+}
+
 void    *realloc(void *ptr, size_t size)
 {
   void	  *tmp;
@@ -29,8 +66,13 @@ void    *realloc(void *ptr, size_t size)
     ptr = malloc(size);
     return (ptr);
   }
-  tmp = malloc(size);
-  ft_strcpy(tmp, ptr);
-  free(ptr);
+  else if (ptr)
+  {
+    if (search_block(e, ptr))
+      return (NULL);
+    tmp = malloc(size);
+    ft_strcpy(tmp, ptr);
+    free(ptr);
+  }
   return (tmp);
 }
