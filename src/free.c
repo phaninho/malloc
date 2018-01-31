@@ -10,16 +10,54 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/ft_malloc.h"
+#include "ft_malloc.h"
 
 void		free(void *ptr)
 {
-	t_block	*block;
+	t_env		*e;
+	t_block	*block = NULL;
+	t_block	*tmp = NULL;
 
+	e = init_env();
 	if (!ptr)
 		return ;
-	block = ptr - sizeof(t_block);
-
-	if (block && block->state == USED)
-		block->state = FREE;
+	if (e->tiny)
+		block = e->tiny;
+	tmp = block;
+	while (tmp && tmp->next)
+	{
+		if ((void *)tmp + sizeof(t_block) == ptr)
+		{
+			if (tmp->state == USED)
+				tmp->state = FREE;
+			break ;
+		}
+		tmp = tmp->next;
+	}
+  if (e->small)
+		block = e->small;
+	tmp = block;
+	while (tmp && tmp->next)
+	{
+		if ((void *)tmp + sizeof(t_block) == ptr)
+		{
+			if (tmp->state == USED)
+				tmp->state = FREE;
+			break ;
+		}
+		tmp = tmp->next;
+	}
+  if (e->large)
+		block = e->large;
+	tmp = block;
+	while (tmp && tmp->next)
+	{
+		if ((void *)tmp + sizeof(t_block) == ptr)
+		{
+			if (tmp->state == USED)
+				tmp->state = FREE;
+			break ;
+		}
+		tmp = tmp->next;
+	}
 }

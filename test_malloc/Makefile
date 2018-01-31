@@ -20,7 +20,7 @@ all :
 	gcc test3bis.c -o test3bis
 	gcc test4.c -o test4
 	gcc test5.c -o test5 -L. -lft_malloc
-	gcc test.c -o test -L. -lft_malloc
+	#gcc test.c -o test -L. -lft_malloc
 
 test0:
 	./run.sh /usr/bin/time -l ./test0

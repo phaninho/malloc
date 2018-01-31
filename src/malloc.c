@@ -17,27 +17,34 @@ void		*large_alloc(size_t size, t_env *e)
 {
   // void	      *ptr = NULL;
   t_block   *tmp = NULL;
-
-  if (e->large && e->large->next)
+  // printf("large\n");
+  if (e->large)
 	{
 		tmp = e->large;
 		while (tmp && tmp->next)
-			tmp = tmp->next;
+        {
+          if (tmp->state == FREE && tmp->size >= size)
+          {
+            tmp->state = USED;
+            return ((void*)tmp + sizeof(t_block));
+          }
+          tmp = tmp->next;
+        }
 	}
-  if (!(e->large) || (tmp && tmp->size < size))
+  if (!(e->large))
   {
-    if (!(e->large))
-    {
-		if (init_page(e,  &(e)->large, size + sizeof(t_block), TYPE_LARGE))
+    // printf("large vide\n");
+	if (init_page(e,  &(e)->large, size + sizeof(t_block), TYPE_LARGE))
+      return (NULL);
+    return (create_block(e->large, size));
+  }
+  else if (tmp && tmp->size < size)
+  {
+    // printf("tmp plein\n");
+
+    if (init_page(e,  &tmp, size + sizeof(t_block), TYPE_LARGE))
         return (NULL);
-      return (create_block(e->large, size));
-    }
-    else if (tmp)
-    {
-      if (init_page(e,  &tmp, size + sizeof(t_block), TYPE_LARGE))
-          return (NULL);
-        return (create_block(tmp, size));
-    }
+      return (create_block(tmp, size));
   }
   return (create_block(tmp, size));
 }
@@ -87,6 +94,7 @@ void		*malloc(size_t size)
 {
 	t_env   *e;
 	void	  *ptr;
+
 	e = init_env();
 	if (size == 0)
 		return (NULL);
@@ -96,5 +104,6 @@ void		*malloc(size_t size)
 		ptr = small_alloc(size, e);
 	else
 		ptr = large_alloc(size, e);
+    // printf("dehors\n");
 	return (ptr);
 }

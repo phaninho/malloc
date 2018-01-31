@@ -15,7 +15,9 @@
 void    *realloc(void *ptr, size_t size)
 {
   void	  *tmp;
+  t_env   *e;
 
+  e = init_env();
   tmp = NULL;
   if (size == 0)
   {
@@ -28,7 +30,7 @@ void    *realloc(void *ptr, size_t size)
     return (ptr);
   }
   tmp = malloc(size);
-  ft_strncat(tmp, ptr, size);
+  ft_strcpy(tmp, ptr);
   free(ptr);
   return (tmp);
 }

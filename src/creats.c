@@ -22,7 +22,14 @@ void	  *create_block(t_block *block, size_t size)
   {
     tmp = block;
     while (tmp && tmp->next)
+    {
+      if (tmp->state == FREE && tmp->size >= size)
+      {
+        tmp->state = USED;
+        return ((void*)tmp + sizeof(t_block));
+      }
       tmp = tmp->next;
+    }
     next = tmp;
   }
   if (next && next->state == FREE && size < next->size)
