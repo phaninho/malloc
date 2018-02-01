@@ -1,6 +1,8 @@
-#include <string.h>
-#include <stdlib.h>
-#include <unistd.h>
+// #include <string.h>
+// #include <stdlib.h>
+// #include <unistd.h>
+#include "../include/ft_malloc.h"
+
 #define Mo (1024 * 1024)
 
 void	print(char *s)

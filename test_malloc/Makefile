@@ -6,7 +6,7 @@
 #    By: jwalle <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/09/20 17:39:34 by jwalle            #+#    #+#              #
-#    Updated: 2017/05/19 16:06:30 by dchristo         ###   ########.fr        #
+#    Updated: 2018/02/01 17:34:46 by stmartin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,11 +14,11 @@ all :
 	make -C ../ re
 	cp ../*.so .
 	gcc test0.c -o test0
-	gcc test1.c -o test1
+	gcc test1.c -o test1 -L. -lft_malloc
 	gcc test2.c -o test2 -L. -lft_malloc
-	gcc test3.c -o test3
-	gcc test3bis.c -o test3bis
-	gcc test4.c -o test4
+	gcc test3.c -o test3 -L. -lft_malloc
+	gcc test3bis.c -o test3bis -L. -lft_malloc
+	gcc test4.c -o test4 -L. -lft_malloc
 	gcc test5.c -o test5 -L. -lft_malloc
 	#gcc test.c -o test -L. -lft_malloc
 
