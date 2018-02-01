@@ -53,7 +53,7 @@ void    *realloc(void *ptr, size_t size)
 {
   void	  *tmp;
   t_env   *e;
-// printf("ici\n");
+  
   e = init_env();
   tmp = NULL;
   if (size == 0)

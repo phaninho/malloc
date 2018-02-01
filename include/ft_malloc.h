@@ -19,6 +19,7 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <stdbool.h>
+# include <pthread.h>
 
 # define  FREE 0
 # define  USED 1

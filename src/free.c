@@ -12,52 +12,34 @@
 
 #include "ft_malloc.h"
 
+void		free_by_type(t_block *block, void *ptr)
+{
+	t_block	*tmp;
+
+	tmp = block;
+	while (tmp && tmp->next)
+	{
+		if ((void *)tmp + sizeof(t_block) == ptr)
+		{
+			if (tmp->state == USED)
+				tmp->state = FREE;
+			break ;
+		}
+		tmp = tmp->next;
+	}
+}
+
 void		free(void *ptr)
 {
 	t_env		*e;
-	t_block	*block = NULL;
-	t_block	*tmp = NULL;
 
 	e = init_env();
 	if (!ptr)
 		return ;
 	if (e->tiny)
-		block = e->tiny;
-	tmp = block;
-	while (tmp && tmp->next)
-	{
-		if ((void *)tmp + sizeof(t_block) == ptr)
-		{
-			if (tmp->state == USED)
-				tmp->state = FREE;
-			break ;
-		}
-		tmp = tmp->next;
-	}
+		free_by_type(e->tiny, ptr);
   if (e->small)
-		block = e->small;
-	tmp = block;
-	while (tmp && tmp->next)
-	{
-		if ((void *)tmp + sizeof(t_block) == ptr)
-		{
-			if (tmp->state == USED)
-				tmp->state = FREE;
-			break ;
-		}
-		tmp = tmp->next;
-	}
+		free_by_type(e->small, ptr);
   if (e->large)
-		block = e->large;
-	tmp = block;
-	while (tmp && tmp->next)
-	{
-		if ((void *)tmp + sizeof(t_block) == ptr)
-		{
-			if (tmp->state == USED)
-				tmp->state = FREE;
-			break ;
-		}
-		tmp = tmp->next;
-	}
+		free_by_type(e->large, ptr);
 }

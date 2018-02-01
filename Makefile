@@ -24,7 +24,7 @@ LIB_PATH = ./libft/
 
 SRC_NAME = malloc.c show_alloc.c realloc.c free.c inits.c creats.c calloc.c
 OBJ_NAME = $(SRC_NAME:.c=.o)
-LIB_NAME = -lft
+LIB_NAME = -lft -lpthread
 DEP = ./include/ft_malloc.h
 
 SRC = $(addprefix $(SRC_PATH),$(SRC_NAME))
