@@ -38,7 +38,7 @@ void	  *create_block(t_block *block, size_t size)
     next->next = ((void*)next + sizeof(t_block) + size);
     next->next->state = FREE;
     next->next->size = (int)next->size - (int)size - sizeof(t_block);
-	next->next->next = NULL;
+	  next->next->next = NULL;
     next->size = size;
     return ((void*)next + sizeof(t_block));
   }
@@ -48,19 +48,10 @@ void	  *create_block(t_block *block, size_t size)
     block->next = ((void*)block + sizeof(t_block) + size);
     block->next->state = FREE;
     block->next->size = (int)block->size - (int)size - sizeof(t_block);
-	block->next->next = NULL;
+	  block->next->next = NULL;
     block->size = size;
 		return ((void*)block + sizeof(t_block));
   }
-  // else if (next && size > next->size)
-  // {
-  //   if (!(create_page(size, &next)))
-  //     return (NULL);
-  //   else
-  //     return (create_block(next, size));
-  // }
-  // else
-  //   printf("la %zu\n", block->size);
 	return (NULL);
 }
 
