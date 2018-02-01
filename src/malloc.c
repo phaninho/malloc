@@ -12,7 +12,6 @@
 
 #include "ft_malloc.h"
 
-
 void		*large_alloc(size_t size, t_env *e)
 {
   t_block   *tmp;
@@ -22,14 +21,14 @@ void		*large_alloc(size_t size, t_env *e)
 	{
 		tmp = e->large;
 		while (tmp && tmp->next)
-        {
-          if (tmp->state == FREE && tmp->size >= size)
-          {
-            tmp->state = USED;
-            return ((void*)tmp + sizeof(t_block));
-          }
-          tmp = tmp->next;
-        }
+    {
+      if (tmp->state == FREE && tmp->size >= size)
+      {
+        tmp->state = USED;
+        return ((void*)tmp + sizeof(t_block));
+      }
+      tmp = tmp->next;
+    }
 	}
   if (!(e->large))
   {
