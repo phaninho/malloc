@@ -67,6 +67,7 @@ void		show_alloc_mem(void)
 
 	len = 0;
 	e = init_env();
+	pthread_mutex_lock(&e->mut);
 	if (e->tiny)
 		print_addr(e->tiny, &len, TYPE_TINY);
 	if (e->small)
@@ -79,4 +80,5 @@ void		show_alloc_mem(void)
 		ft_putnbr(len);
 		ft_putendl(" octets");
 	}
+	pthread_mutex_unlock(&e->mut);
 }

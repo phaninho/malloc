@@ -6,7 +6,7 @@
 /*   By: byoung-w <byoung-w@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/09/08 14:49:06 by byoung-w          #+#    #+#             */
-/*   Updated: 2018/02/01 17:50:49 by stmartin         ###   ########.fr       */
+/*   Updated: 2018/02/02 19:45:02 by stmartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int		main(void)
 	malloc(1024 * 1024);
 	malloc(1024 * 1024 * 16);
 	malloc(1024 * 1024 * 128);
-	ft_utstr("\n---------show_alloc_mem()------------\n");
+	ft_putstr("\n---------show_alloc_mem()------------\n");
 	show_alloc_mem();
 	// ft_putstr("\n---------show_alloc_mem_ex()---------\n");
 	// show_alloc_mem_ex();

@@ -119,4 +119,3 @@ cmd.call(com.split())
 com = "./" + bin_folder + "test5"
 output = cmd_output_only(com.split())
 print(output)
-

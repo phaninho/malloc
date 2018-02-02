@@ -106,6 +106,7 @@ void		*malloc(size_t size)
 	void		*ptr;
 
 	e = init_env();
+	pthread_mutex_lock(&e->mut);
 	if (size == 0)
 		return (NULL);
 	if (size <= TINY)
@@ -114,5 +115,6 @@ void		*malloc(size_t size)
 		ptr = small_alloc(size, e);
 	else
 		ptr = large_alloc(size, e);
+	pthread_mutex_unlock(&e->mut);
 	return (ptr);
 }

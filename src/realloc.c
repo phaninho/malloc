@@ -43,6 +43,25 @@ int		search_block(t_env *e, void *ptr)
 	return (1);
 }
 
+void	*alloc_copy(t_env *e, void *ptr, size_t size)
+{
+	void	*tmp;
+
+	if (search_block(e, ptr))
+	{
+		pthread_mutex_unlock(&e->mut);
+		return (NULL);
+	}
+	pthread_mutex_unlock(&e->mut);
+	tmp = malloc(size);
+	pthread_mutex_lock(&e->mut);
+	ft_strcpy(tmp, ptr);
+	pthread_mutex_unlock(&e->mut);
+	free(ptr);
+	pthread_mutex_lock(&e->mut);
+	return (tmp);
+}
+
 void	*realloc(void *ptr, size_t size)
 {
 	void	*tmp;
@@ -50,23 +69,21 @@ void	*realloc(void *ptr, size_t size)
 
 	e = init_env();
 	tmp = NULL;
+	pthread_mutex_lock(&e->mut);
 	if (size == 0)
 	{
+		pthread_mutex_unlock(&e->mut);
 		free(ptr);
 		return (NULL);
 	}
 	if (!ptr)
 	{
+		pthread_mutex_unlock(&e->mut);
 		ptr = malloc(size);
 		return (ptr);
 	}
 	else if (ptr)
-	{
-		if (search_block(e, ptr))
-			return (NULL);
-		tmp = malloc(size);
-		ft_strcpy(tmp, ptr);
-		free(ptr);
-	}
+		tmp = alloc_copy(e, ptr, size);
+	pthread_mutex_unlock(&e->mut);
 	return (tmp);
 }

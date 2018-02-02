@@ -6,7 +6,7 @@
 /*   By: stmartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/27 18:56:43 by stmartin          #+#    #+#             */
-/*   Updated: 2018/02/02 16:50:19 by stmartin         ###   ########.fr       */
+/*   Updated: 2018/02/02 21:38:35 by stmartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@
 # define TYPE_SMALL 1
 # define TYPE_LARGE 2
 
-# define TINY   16
-# define SMALL  512
+# define TINY   1024
+# define SMALL  102400
 # define TINY_BLOCK_SIZE sizeof(t_block_tiny)
 # define SMALL_BLOCK_SIZE sizeof(t_block_small)
 # define ALIGN_PAGE(x) ((((x - 1) >> 12) << 12) + getpagesize())
@@ -52,6 +52,7 @@ struct		s_env
 	size_t	tiny_page_size;
 	size_t	small_page_size;
 	size_t	large_page_size;
+	pthread_mutex_t	mut;
 };
 
 void		free(void *ptr);

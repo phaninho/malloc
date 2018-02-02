@@ -14,7 +14,7 @@
 
 t_env		*init_env(void)
 {
-	static t_env	e = {NULL, NULL, NULL, 0, 0, 0};
+	static t_env	e = {NULL, NULL, NULL, 0, 0, 0, PTHREAD_MUTEX_INITIALIZER};
 
 	return (&e);
 }
