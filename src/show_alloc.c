@@ -6,59 +6,77 @@
 /*   By: stmartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/27 18:56:19 by stmartin          #+#    #+#             */
-/*   Updated: 2018/02/02 16:13:42 by stmartin         ###   ########.fr       */
+/*   Updated: 2018/02/02 19:04:35 by stmartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/ft_malloc.h"
 
-void    show_alloc_mem()
+char		to_ex(int nb)
 {
-	t_env			*e;
-	t_block		*block;
-	size_t		len;
+	if (nb >= 10)
+		return (nb - 10 + 'A');
+	return (nb + '0');
+}
+
+void		print_in_hexa(int nb)
+{
+	int		tmp;
+	int		i;
+	char	s[7];
+
+	s[6] = '\0';
+	i = 6;
+	tmp = nb;
+	while (i > 0)
+	{
+		i--;
+		tmp = nb % 16;
+		s[i] = to_ex(tmp);
+		nb /= 16;
+	}
+	ft_putstr("0x");
+	ft_putstr(s);
+}
+
+void		print_addr(t_block *block, size_t *len, int type)
+{
+	if (type == TYPE_TINY)
+		ft_putstr("TINY : ");
+	else
+		ft_putstr(type == TYPE_SMALL ? "SMALL : " : "LARGE : ");
+	print_in_hexa((int)block);
+	ft_putendl("");
+	while (block->next)
+	{
+		*len += block->size;
+		print_in_hexa((int)block + sizeof(t_block));
+		ft_putstr(" - ");
+		print_in_hexa((int)block + sizeof(t_block) + block->size);
+		ft_putstr(" : ");
+		ft_putnbr(block->size);
+		ft_putendl(" octets");
+		block = block->next;
+	}
+}
+
+void		show_alloc_mem(void)
+{
+	t_env	*e;
+	size_t	len;
 
 	len = 0;
 	e = init_env();
-
 	if (e->tiny)
-	{
-		block = e->tiny;
-		printf("TINY : %p\n", (void*)block - sizeof(t_block));
-		printf("%p - %p : %lu octets\n", block, (void*)block + block->size, block->size);
-		len += block->size;
-		while (block->next && block->next->next)
-		{
-			block = block->next;
-			len += block->size;
-			printf("%p - %p : %lu octets\n", block, (void *)block + block->size, block->size);
-		}
-	}
+		print_addr(e->tiny, &len, TYPE_TINY);
 	if (e->small)
-	{
-		block = e->small;
-		printf("SMALL : %p\n", (void *)block - sizeof(t_block));
-		printf("%p - %p : %lu octets\n", block, (void*)block + block->size, block->size);
-		len += block->size;
-		while (block->next && block->next->next)
-		{
-			block = block->next;
-			len += block->size;
-			printf("%p - %p : %lu octets\n", block, (void*)block + block->size, block->size);
-		}
-	}
+		print_addr(e->small, &len, TYPE_SMALL);
 	if (e->large)
+		print_addr(e->large, &len, TYPE_LARGE);
+	if (len)
 	{
-		block = e->large;
-		printf("LARGE : %p\n", (void *)block - sizeof(t_block));
-		printf("%p - %p : %lu octets\n", block, (void*)block + block->size, block->size);
-		len += block->size;
-		while (block->next && block->next->next)
-		{
-			block = block->next;
-			printf("%p - %p : %lu octets\n", block, (void*)block + block->size, block->size);
-			len += block->size;
-		}
+		ft_putstr("Total : ");
+		ft_putnbr(len);
+		ft_putendl(" octets");
 	}
-	printf("Total : %lu octets\n", len);
 }

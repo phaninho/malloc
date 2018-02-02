@@ -6,7 +6,7 @@
 /*   By: stmartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/26 10:06:19 by stmartin          #+#    #+#             */
-/*   Updated: 2016/05/12 15:57:20 by stmartin         ###   ########.fr       */
+/*   Updated: 2018/02/02 17:45:19 by stmartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <unistd.h>
 # include <string.h>
 # include <stdlib.h>
+# include <limits.h>
 
 # define BUFF_SIZE 100
 
@@ -35,6 +36,7 @@ typedef struct		s_list
 }					t_list;
 
 int					ft_abs(int nb);
+char				*ft_itoa_base(int value, int base);
 double				ft_p2(double nb);
 double				ft_double_abs(double nb);
 void				ft_swap(int *a, int *b);
@@ -96,7 +98,7 @@ t_list				*ft_lstnew(void const *content, size_t content_size);
 void				ft_lstdelone(t_list **alst, void (*del)(void *, size_t));
 void				ft_putendl(const char *s);
 void				ft_lstdel(t_list **alst, void (*del)(void *, size_t));
-void				ft_lstadd(t_list **alst, t_list *new);
+void				ft_lstadd(t_list **alst, t_list *nnew);
 void				ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 void				ft_strrev(char *str);
