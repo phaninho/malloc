@@ -6,7 +6,7 @@
 /*   By: stmartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/27 18:55:27 by stmartin          #+#    #+#             */
-/*   Updated: 2018/01/27 18:55:34 by stmartin         ###   ########.fr       */
+/*   Updated: 2018/02/02 16:12:31 by stmartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 void    *calloc(size_t nmemb, size_t size)
 {
-  void	*ptr;
+	void	*ptr;
 
-  if (nmemb == 0 || size == 0)
-    return (NULL);
-  ptr = malloc(nmemb * size);
-  ft_memset(ptr, 0, nmemb * size);
-  return (ptr);
+	if (nmemb == 0 || size == 0)
+		return (NULL);
+	ptr = malloc(nmemb * size);
+	ft_memset(ptr, 0, nmemb * size);
+	return (ptr);
 }

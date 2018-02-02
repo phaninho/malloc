@@ -6,7 +6,7 @@
 /*   By: stmartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/27 18:56:43 by stmartin          #+#    #+#             */
-/*   Updated: 2018/01/27 18:56:46 by stmartin         ###   ########.fr       */
+/*   Updated: 2018/02/02 16:30:31 by stmartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,19 +39,19 @@ typedef struct s_env t_env;
 
 struct     s_block
 {
-  t_block  *next;
-  size_t   size;
-  bool     state;
+	t_block  *next;
+	size_t   size;
+	bool     state;
 };
 
 struct    s_env
 {
-  t_block  *tiny;
-  t_block  *small;
-  t_block  *large;
-  size_t   tiny_page_size;
-  size_t   small_page_size;
-  size_t   large_page_size;
+	t_block  *tiny;
+	t_block  *small;
+	t_block  *large;
+	size_t   tiny_page_size;
+	size_t   small_page_size;
+	size_t   large_page_size;
 };
 
 void		free(void *ptr);
@@ -62,6 +62,7 @@ void	  *calloc(size_t nmemb, size_t size);
 
 void	  *create_block(t_block *block, size_t size);
 void    init_block(t_block *block, size_t size);
+int     block_search(t_block *block, size_t size, t_block **tmp);
 int     create_page(size_t size, t_block **block);
 int			init_page(t_env *e, t_block **block, int type_size, int type);
 t_env		*init_env();

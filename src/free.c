@@ -6,7 +6,7 @@
 /*   By: stmartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/27 18:55:45 by stmartin          #+#    #+#             */
-/*   Updated: 2018/01/27 18:55:47 by stmartin         ###   ########.fr       */
+/*   Updated: 2018/02/02 16:12:22 by stmartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ void		free(void *ptr)
 		return ;
 	if (e->tiny)
 		free_by_type(e->tiny, ptr);
-  if (e->small)
+	if (e->small)
 		free_by_type(e->small, ptr);
-  if (e->large)
+	if (e->large)
 		free_by_type(e->large, ptr);
 }
