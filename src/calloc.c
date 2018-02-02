@@ -6,13 +6,13 @@
 /*   By: stmartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/27 18:55:27 by stmartin          #+#    #+#             */
-/*   Updated: 2018/02/02 16:12:31 by stmartin         ###   ########.fr       */
+/*   Updated: 2018/02/02 16:34:20 by stmartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/ft_malloc.h"
 
-void    *calloc(size_t nmemb, size_t size)
+void	*calloc(size_t nmemb, size_t size)
 {
 	void	*ptr;
 

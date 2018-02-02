@@ -6,13 +6,13 @@
 /*   By: stmartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/27 18:56:10 by stmartin          #+#    #+#             */
-/*   Updated: 2018/02/02 16:13:32 by stmartin         ###   ########.fr       */
+/*   Updated: 2018/02/02 16:40:33 by stmartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_malloc.h"
 
-int      block_search(t_block *block, size_t size, t_block **tmp)
+int			block_search(t_block *block, size_t size, t_block **tmp)
 {
 	*tmp = block;
 	while (*tmp && (*tmp)->next)
@@ -29,7 +29,7 @@ int      block_search(t_block *block, size_t size, t_block **tmp)
 
 void		*large_alloc(size_t size, t_env *e)
 {
-	t_block   *tmp;
+	t_block		*tmp;
 
 	tmp = NULL;
 	if (e->large)
@@ -39,7 +39,7 @@ void		*large_alloc(size_t size, t_env *e)
 	}
 	if (!(e->large))
 	{
-		if (init_page(e,  &(e)->large, size + sizeof(t_block), TYPE_LARGE))
+		if (init_page(e, &(e)->large, size + sizeof(t_block), TYPE_LARGE))
 			return (NULL);
 		return (create_block(e->large, size));
 	}
@@ -47,7 +47,7 @@ void		*large_alloc(size_t size, t_env *e)
 	{
 		while (tmp && tmp->next)
 			tmp = tmp->next;
-		if (init_page(e,  &tmp, size + sizeof(t_block), TYPE_LARGE))
+		if (init_page(e, &tmp, size + sizeof(t_block), TYPE_LARGE))
 			return (NULL);
 		return (create_block(tmp, size));
 	}
@@ -56,9 +56,11 @@ void		*large_alloc(size_t size, t_env *e)
 
 void		*small_alloc(size_t size, t_env *e)
 {
-	void	*ptr = NULL;
-	t_block *tmp = NULL;
+	void		*ptr;
+	t_block		*tmp;
 
+	ptr = NULL;
+	tmp = NULL;
 	if (e->small && e->small->next)
 	{
 		tmp = e->small;
@@ -76,16 +78,19 @@ void		*small_alloc(size_t size, t_env *e)
 
 void		*tiny_alloc(size_t size, t_env *e)
 {
-	void	*ptr = NULL;
-	t_block *tmp = NULL;
+	void		*ptr;
+	t_block		*tmp;
 
+	ptr = NULL;
+	tmp = NULL;
 	if (e->tiny && e->tiny->next)
 	{
 		tmp = e->tiny;
 		while (tmp && tmp->next && tmp->next->next)
 			tmp = tmp->next;
 	}
-	if (!(e->tiny) || (tmp && tmp->next && (int)tmp->next->size < (int)sizeof(t_block) + (int)size))
+	if (!(e->tiny) || (tmp && tmp->next && \
+				(int)tmp->next->size < (int)sizeof(t_block) + (int)size))
 	{
 		if (init_page(e, tmp ? &tmp->next : &(e)->tiny, TINY, TYPE_TINY))
 			return (NULL);
@@ -97,8 +102,8 @@ void		*tiny_alloc(size_t size, t_env *e)
 
 void		*malloc(size_t size)
 {
-	t_env   *e;
-	void	  *ptr;
+	t_env		*e;
+	void		*ptr;
 
 	e = init_env();
 	if (size == 0)

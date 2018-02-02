@@ -6,7 +6,7 @@
 /*   By: stmartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/27 18:55:40 by stmartin          #+#    #+#             */
-/*   Updated: 2018/02/02 16:28:13 by stmartin         ###   ########.fr       */
+/*   Updated: 2018/02/02 16:35:23 by stmartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void		assign_block(t_block **block, size_t size)
 	(*block)->size = size;
 }
 
-void	  *create_block(t_block *block, size_t size)
+void		*create_block(t_block *block, size_t size)
 {
 	t_block *next;
 	t_block *tmp;
@@ -48,7 +48,7 @@ void	  *create_block(t_block *block, size_t size)
 	return (NULL);
 }
 
-int     create_page(size_t size, t_block **block)
+int			create_page(size_t size, t_block **block)
 {
 	if ((*block = (void *)mmap(0, size, PROT_READ | PROT_WRITE,\
 					MAP_ANON | MAP_PRIVATE, -1, 0)) == MAP_FAILED)

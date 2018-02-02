@@ -6,13 +6,13 @@
 /*   By: stmartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/27 18:56:15 by stmartin          #+#    #+#             */
-/*   Updated: 2018/02/02 16:13:30 by stmartin         ###   ########.fr       */
+/*   Updated: 2018/02/02 16:42:21 by stmartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/ft_malloc.h"
 
-int   search_all_type(t_block *block, void *ptr)
+int		search_all_type(t_block *block, void *ptr)
 {
 	while (block)
 	{
@@ -23,8 +23,7 @@ int   search_all_type(t_block *block, void *ptr)
 	return (1);
 }
 
-
-int   search_block(t_env *e, void *ptr)
+int		search_block(t_env *e, void *ptr)
 {
 	if (e->tiny)
 	{
@@ -44,10 +43,10 @@ int   search_block(t_env *e, void *ptr)
 	return (1);
 }
 
-void    *realloc(void *ptr, size_t size)
+void	*realloc(void *ptr, size_t size)
 {
-	void	  *tmp;
-	t_env   *e;
+	void	*tmp;
+	t_env	*e;
 
 	e = init_env();
 	tmp = NULL;
