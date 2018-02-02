@@ -14,6 +14,10 @@
 
 void		assign_block(t_block **block, size_t size)
 {
+	time_t	tp;
+
+	time(&tp);
+	(*block)->instant = *localtime(&tp);
 	(*block)->state = USED;
 	(*block)->next = ((void*)(*block) + sizeof(t_block) + size);
 	(*block)->next->state = FREE;

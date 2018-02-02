@@ -31,7 +31,7 @@ SRC_NAME = ft_memset.c ft_bzero.c ft_memcpy.c ft_memccpy.c ft_swap.c \
 		   ft_lstnew.c ft_lstdelone.c ft_lstdel.c ft_lstadd.c \
 		   ft_lstiter.c ft_lstmap.c ft_isspace.c ft_strrev.c ft_intsize.c \
 		   ft_countword_btwsign.c ft_move_sign.c get_next_line.c ft_tabdel.c \
-		   ft_itoa_base.c
+
 OBJ_NAME = $(SRC_NAME:.c=.o)
 
 NAME = libft.a

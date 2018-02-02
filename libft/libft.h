@@ -36,7 +36,6 @@ typedef struct		s_list
 }					t_list;
 
 int					ft_abs(int nb);
-char				*ft_itoa_base(int value, int base);
 double				ft_p2(double nb);
 double				ft_double_abs(double nb);
 void				ft_swap(int *a, int *b);
