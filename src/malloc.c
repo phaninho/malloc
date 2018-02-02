@@ -12,6 +12,21 @@
 
 #include "ft_malloc.h"
 
+int      large_search(t_block *block, size_t size, t_block **tmp)
+{
+  *tmp = block;
+  while (*tmp && (*tmp)->next)
+  {
+    if ((*tmp)->state == FREE && (*tmp)->size >= size)
+    {
+      (*tmp)->state = USED;
+      return (1);
+    }
+    *tmp = (*tmp)->next;
+  }
+  return (0);
+}
+
 void		*large_alloc(size_t size, t_env *e)
 {
   t_block   *tmp;
@@ -19,16 +34,8 @@ void		*large_alloc(size_t size, t_env *e)
   tmp = NULL;
   if (e->large)
 	{
-		tmp = e->large;
-		while (tmp && tmp->next)
-    {
-      if (tmp->state == FREE && tmp->size >= size)
-      {
-        tmp->state = USED;
-        return ((void*)tmp + sizeof(t_block));
-      }
-      tmp = tmp->next;
-    }
+		if ((large_search(e->large, size, &tmp)))
+      return ((void*)tmp + sizeof(t_block));
 	}
   if (!(e->large))
   {
@@ -38,6 +45,8 @@ void		*large_alloc(size_t size, t_env *e)
   }
   else if (tmp && tmp->size < size)
   {
+    while (tmp && tmp->next)
+      tmp = tmp->next;
     if (init_page(e,  &tmp, size + sizeof(t_block), TYPE_LARGE))
         return (NULL);
       return (create_block(tmp, size));
