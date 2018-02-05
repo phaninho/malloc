@@ -87,3 +87,33 @@ void	*realloc(void *ptr, size_t size)
 	pthread_mutex_unlock(&e->mut);
 	return (tmp);
 }
+
+void	*reallocf(void *ptr, size_t size)
+{
+	void	*tmp;
+	t_env	*e;
+
+	e = init_env();
+	tmp = NULL;
+	pthread_mutex_lock(&e->mut);
+	if (size == 0)
+	{
+		pthread_mutex_unlock(&e->mut);
+		free(ptr);
+		return (NULL);
+	}
+	if (!ptr)
+	{
+		pthread_mutex_unlock(&e->mut);
+		ptr = malloc(size);
+		return (ptr);
+	}
+	else if (ptr && !(tmp = alloc_copy(e, ptr, size)))
+	{
+		pthread_mutex_unlock(&e->mut);
+		free(ptr);
+		pthread_mutex_lock(&e->mut);
+	}
+	pthread_mutex_unlock(&e->mut);
+	return (tmp);
+}
