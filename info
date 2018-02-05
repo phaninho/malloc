@@ -1,4 +1,3 @@
 bonus:
 -multithread
--shonw_mem_ex
 -calloc

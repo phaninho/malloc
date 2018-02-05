@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test1.c                                            :+:      :+:    :+:   */
+/*   test0.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: byoung-w <byoung-w@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/09/08 14:49:06 by byoung-w          #+#    #+#             */
-/*   Updated: 2018/02/01 17:43:12 by stmartin         ###   ########.fr       */
+/*   Updated: 2018/02/01 17:42:56 by stmartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/ft_malloc.h"
+#include "./include/ft_malloc.h"
 
-int		main(void)
+int			main(void)
 {
 	int		i;
 	char	*addr;
@@ -20,8 +20,6 @@ int		main(void)
 	i = 0;
 	while (i < 1024)
 	{
-		addr = (char*)malloc(1024);
-		addr[0] = 42;
 		i++;
 	}
 	return (0);

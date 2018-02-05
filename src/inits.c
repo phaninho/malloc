@@ -21,10 +21,6 @@ t_env		*init_env(void)
 
 void		init_block(t_block *block, size_t size)
 {
-	time_t	tp;
-
-	time(&tp);
-	block->instant = *localtime(&tp);
 	block->size = size - sizeof(t_block);
 	block->state = FREE;
 	block->next = NULL;
