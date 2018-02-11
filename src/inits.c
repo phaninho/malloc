@@ -26,14 +26,14 @@ void		init_block(t_block *block, size_t size)
 	block->next = NULL;
 }
 
-int			init_page(t_env *e, t_block **block, int type_size, int type)
+int			init_page(t_env *e, t_block **block, int size, int type)
 {
 	size_t			len;
 
 	if (type != TYPE_LARGE)
-		len = ALIGN_PAGE((type_size + sizeof(t_block)) * 100);
+		len = ALIGN_PAGE((size + sizeof(t_block)) * 100);
 	else
-		len = ALIGN_PAGE((type_size + sizeof(t_block)));
+		len = ALIGN_PAGE((size + sizeof(t_block)));
 	if (type == TYPE_TINY)
 		e->tiny_page_size += len;
 	else if (type == TYPE_SMALL)

@@ -105,8 +105,7 @@ void	*reallocf(void *ptr, size_t size)
 	if (!ptr)
 	{
 		pthread_mutex_unlock(&e->mut);
-		ptr = malloc(size);
-		return (ptr);
+		return (malloc(size));
 	}
 	else if (ptr && !(tmp = alloc_copy(e, ptr, size)))
 	{
