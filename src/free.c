@@ -12,7 +12,7 @@
 
 #include "ft_malloc.h"
 
-int			free_by_type(t_block *block, void *ptr)
+int			free_by_type(t_block *block, void *ptr, int type)
 {
 	t_block	*tmp;
 
@@ -22,7 +22,11 @@ int			free_by_type(t_block *block, void *ptr)
 		if ((void *)tmp + sizeof(t_block) == ptr)
 		{
 			if (tmp->state == USED)
+			{
 				tmp->state = FREE;
+				if (type == TYPE_LARGE)
+					munmap(tmp, tmp->size);
+			}
 			return (1);
 		}
 		tmp = tmp->next;
@@ -44,10 +48,10 @@ void		free(void *ptr)
 		return ;
 	}
 	if (e->tiny)
-		ret = free_by_type(e->tiny, ptr);
+		ret = free_by_type(e->tiny, ptr, TYPE_TINY);
 	if (e->small && ret == 0)
-		ret = free_by_type(e->small, ptr);
+		ret = free_by_type(e->small, ptr, TYPE_SMALL);
 	if (e->large && ret == 0)
-		ret = free_by_type(e->large, ptr);
+		ret = free_by_type(e->large, ptr, TYPE_LARGE);
 	pthread_mutex_unlock(&e->mut);
 }
